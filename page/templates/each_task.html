@@ -11,6 +11,15 @@
         Task is not completed
     {% endif %}
 </h3>
+<br/>
+<small>
+    created at : {{ object.created_at }}<br/>
+    due date is : {{ object.due_date }}<br/>
+</small>
+<br/><br/>
+<p>
+    {{ object.info }}
+</p>
 
 <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
 
