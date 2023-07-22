@@ -1,6 +1,13 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import HomeView, TaskView, AddTaskView, ListUserTasksView, DeleteTaskView
+from .views import (
+    HomeView,
+    TaskView,
+    AddTaskView,
+    ListUserTasksView,
+    DeleteTaskView,
+    EditTaskView,
+)
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
@@ -8,4 +15,5 @@ urlpatterns = [
     path("task/<int:pk>", TaskView.as_view(), name="each_task"),
     path("add_task/", AddTaskView.as_view(), name="add_task"),
     path("delete_task/<int:pk>", DeleteTaskView.as_view(), name="delete_task"),
+    path("edit_task/<int:pk>", EditTaskView.as_view(), name="edit_task"),
 ]

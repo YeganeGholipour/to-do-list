@@ -1,10 +1,16 @@
 from django.shortcuts import render
 from .models import Tasks
-from .forms import AddTask
+from .forms import AddTask, EditTask
 from django.http import HttpResponse
 from django.views import View
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DeleteView, CreateView, DetailView
+from django.views.generic import (
+    ListView,
+    DeleteView,
+    CreateView,
+    DetailView,
+    UpdateView,
+)
 
 
 # def HomeView(request):
@@ -59,3 +65,15 @@ class DeleteTaskView(DeleteView):
     model = Tasks
     template_name = "delete_task.html"
     success_url = reverse_lazy("list_users_task")
+
+
+class EditTaskView(UpdateView):
+    model = Tasks
+    template_name = "edit_task.html"
+    form_class = EditTask
+    success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        # Set the 'user' field to the currently logged-in user
+        form.instance.user = self.request.user
+        return super().form_valid(form)

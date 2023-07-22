@@ -9,7 +9,8 @@
 
     <li>
         <a href="{% url 'each_task' task.pk %}">{{ task.title }} - {{ task.completed }}</a> 
-        <a href="{% url 'delete_task' task.pk %}">Delete</a>
+        <smal><a href="{% url 'delete_task' task.pk %}">-Delete</a></smal>
+        <small><a href="{% url 'edit_task' task.pk %}">-Edit</a></small>
     </li>
     
 {% endfor %}

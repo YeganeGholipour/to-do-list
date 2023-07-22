@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit Task
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated and object.user == user %}
+    <h1>Edit Task</h1>
+    <br/><br/>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-secondary">Edit</button>
+    </form>
+{% else %}
+    <h2>You're not allowed here and you know it ...</h2>
+{% endif %}
+
+{% endblock %}
+
