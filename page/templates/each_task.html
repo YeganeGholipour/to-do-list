@@ -2,14 +2,16 @@
 
 {% block content %}
 
-<h1>{{ task.title }}</h1>
+<h1>{{ object.title }}</h1>
 
 <h3>
-    {{ task.completed }}
-    {{ task.created_at }}
+    {% if object.completed %}
+        Task is completed
+    {% else %}
+        Task is not completed
+    {% endif %}
 </h3>
 
-<a href="{% url 'home' %}" class="btn btn-secondary">Back</button>
-
+<a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
 
 {% endblock %}
