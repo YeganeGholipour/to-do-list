@@ -53,3 +53,9 @@ class AddTaskView(CreateView):
         # Set the 'user' field to the currently logged-in user
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class DeleteTaskView(DeleteView):
+    model = Tasks
+    template_name = "delete_task.html"
+    success_url = reverse_lazy("list_users_task")

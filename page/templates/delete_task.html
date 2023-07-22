@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Delete Task
+{% endblock %}
+
+{% block content %}
+
+<br/><br/>
+{% if user.is_authenticated and object.user == user %}
+    <h1>Delete Task</h1>
+    <br/><br/>
+    <h3>Delete: {{ object.title }}</h3>
+    <form method="POST">
+        {% csrf_token %}
+        <button class="btn btn-secondary">Delete</button>
+    </form>
+{% else %}
+    <h2>You're not allowed here and you know it ...</h2>
+{% endif %}
+
+{% endblock %}
+
