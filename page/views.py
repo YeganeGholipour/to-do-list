@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Tasks
 from .forms import AddTask
 from django.http import HttpResponse
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView, DetailView
 
 
@@ -23,3 +24,4 @@ class AddTaskView(CreateView):
     model = Tasks
     template_name = "add_task.html"
     form_class = AddTask
+    success_url = reverse_lazy("home")
