@@ -5,7 +5,13 @@ Login
 {% endblock %}
 
 {% block content %}
-
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
 <h1>Login...</h1>
 <br/><br/>
@@ -14,5 +20,4 @@ Login
     {{ form.as_p }}
     <button class="btn btn-secondary">Login</button>
 </form>
-
 {% endblock %}

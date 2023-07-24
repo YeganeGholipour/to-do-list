@@ -4,17 +4,31 @@
 
 <h1>Tasks</h1>
 
-<ul>
-{% for task in object_list %}
-
-    <li>
-        <a href="{% url 'each_task' task.pk %}">{{ task.title }} - {{ task.completed }}</a> 
-        <smal><a href="{% url 'delete_task' task.pk %}">-Delete</a></smal>
-        <small><a href="{% url 'edit_task' task.pk %}">-Edit</a></small>
-    </li>
-    
-{% endfor %}
-</ul>
-
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Completed</th>
+            <th>Created At</th>
+            <th>Title Tag</th>
+            <th>Due Date</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for task in object_list %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>{% if task.completed %}Completed{% else %}Not Completed{% endif %}</td>
+            <td>{{ task.created_at }}</td>
+            <td>{{ task.title_tag }}</td>
+            <td>{{ task.due_date }}</td>
+            <td>
+                <a href="{% url 'each_task' task.pk %}" class="btn btn-sm btn-primary">View</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

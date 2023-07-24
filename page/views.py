@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Tasks
 from .forms import AddTask, EditTask
 from django.http import HttpResponse
@@ -49,7 +50,7 @@ class TaskView(DetailView):
     template_name = "each_task.html"
 
 
-class AddTaskView(CreateView):
+class AddTaskView(LoginRequiredMixin, CreateView):
     model = Tasks
     template_name = "add_task.html"
     form_class = AddTask
@@ -67,11 +68,11 @@ class DeleteTaskView(DeleteView):
     success_url = reverse_lazy("list_users_task")
 
 
-class EditTaskView(UpdateView):
+class EditTaskView(LoginRequiredMixin, UpdateView):
     model = Tasks
     template_name = "edit_task.html"
     form_class = EditTask
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("list_users_task")
 
     def form_valid(self, form):
         # Set the 'user' field to the currently logged-in user
