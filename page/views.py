@@ -1,9 +1,10 @@
 from typing import Any
 from django.db import models
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Tasks
-from .forms import AddTask, EditTask
+from .models import Tasks, Category
+from .forms import AddTask, EditTask, AddCategory
 from django.http import HttpResponse
 from django.views import View
 from django.urls import reverse_lazy
@@ -99,3 +100,15 @@ class EachCategory(ListView):
     def get_queryset(self):
         title_tag = self.kwargs.get("cat")
         return Tasks.objects.filter(title_tag=title_tag)
+
+
+class AddCategoryView(CreateView):
+    model = Category
+    fields = ("name",)
+    template_name = "add_category.html"
+    success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        # Save the new category and return to the home page
+        self.object = form.save()
+        return redirect(self.get_success_url())
