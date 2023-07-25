@@ -1,3 +1,5 @@
+from typing import Any
+from django.db import models
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Tasks
@@ -78,3 +80,22 @@ class EditTaskView(LoginRequiredMixin, UpdateView):
         # Set the 'user' field to the currently logged-in user
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class AllCategories(ListView):
+    model = Tasks
+    template_name = "all_categories.html"
+    context_object_name = "categories"
+
+    def get_queryset(self):
+        return Tasks.objects.values_list("title_tag", flat=True).distinct()
+
+
+class EachCategory(ListView):
+    model = Tasks
+    template_name = "each_category.html"
+    context_object_name = "tasks"
+
+    def get_queryset(self):
+        title_tag = self.kwargs.get("cat")
+        return Tasks.objects.filter(title_tag=title_tag)

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Tasks in Category: {{ tasks.0.title_tag }}</h1>
+
+<ul>
+{% for task in tasks %}
+    <li>
+        <a href="{% url 'each_task' task.pk %}">{{ task.title }} - {{ task.completed }}</a>
+    </li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+
+{% endblock %}
