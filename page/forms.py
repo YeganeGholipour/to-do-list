@@ -61,10 +61,10 @@ class EditTask(forms.ModelForm):
 
 class AddCategory(forms.ModelForm):
     class Meta:
-        model = Tasks
-        fields = ("title_tag",)
-        widget = {
-            "title_tag": forms.TextInput(
+        model = Category
+        fields = ("name",)
+        widgets = {  # Use "widgets" (plural)
+            "name": forms.TextInput(
                 attrs={"class": "form-control", "placeholder": "Add a new category..."}
             ),
         }

@@ -14,9 +14,8 @@ class Tasks(models.Model):
     title = models.CharField(max_length=250)
     completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    # title_tag = models.CharField(max_length=250, default="Uncategorized")
     title_tag = models.ForeignKey(
-        Category, on_delete=models.CASCADE, null=True, blank=True
+        Category, on_delete=models.CASCADE, null=True, default=None
     )
     due_date = models.DateField(default=None, null=True, blank=True)
     info = models.TextField(default=None, null=True, blank=True)

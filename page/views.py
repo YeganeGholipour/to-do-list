@@ -84,12 +84,13 @@ class EditTaskView(LoginRequiredMixin, UpdateView):
 
 
 class AllCategories(ListView):
-    model = Tasks
+    model = Category
     template_name = "all_categories.html"
     context_object_name = "categories"
 
     def get_queryset(self):
-        return Tasks.objects.values_list("title_tag", flat=True).distinct()
+        # Retrieve all Category objects
+        return Category.objects.all()
 
 
 class EachCategory(ListView):
@@ -99,7 +100,12 @@ class EachCategory(ListView):
 
     def get_queryset(self):
         title_tag = self.kwargs.get("cat")
-        return Tasks.objects.filter(title_tag=title_tag)
+        return Tasks.objects.filter(title_tag__name=title_tag)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["category_name"] = self.kwargs.get("cat")
+        return context
 
 
 class AddCategoryView(CreateView):
