@@ -3,7 +3,7 @@ from django.db import models
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Tasks, Category
+from .models import Tasks, Category, Profile, ContactInformation
 from .forms import AddTask, EditTask, AddCategory
 from django.http import HttpResponse
 from django.views import View
@@ -15,10 +15,6 @@ from django.views.generic import (
     DetailView,
     UpdateView,
 )
-
-
-# def HomeView(request):
-# return render(request, "home.html")
 
 
 class HomeView(View):
@@ -60,7 +56,6 @@ class AddTaskView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("home")
 
     def form_valid(self, form):
-        # Set the 'user' field to the currently logged-in user
         form.instance.user = self.request.user
         return super().form_valid(form)
 
@@ -115,6 +110,21 @@ class AddCategoryView(CreateView):
     success_url = reverse_lazy("home")
 
     def form_valid(self, form):
-        # Save the new category and return to the home page
         self.object = form.save()
         return redirect(self.get_success_url())
+
+
+class ProfileView(LoginRequiredMixin, DetailView):
+    model = Profile
+    template_name = "show_profile.html"
+
+    def get_object(self):
+        return self.request.user.profile
+
+    def get_context_data(self, **kwargs: Any):
+        context = super().get_context_data(**kwargs)
+        contact_information = ContactInformation.objects.filter(
+            user_profile=self.object
+        )
+        context["user_information"] = contact_information
+        return context

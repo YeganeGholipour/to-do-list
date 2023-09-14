@@ -52,7 +52,7 @@ class Profile(models.Model):
 
 
 class ContactInformation(models.Model):
-    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    user_profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     contact_type = models.CharField(
         max_length=50, default=None, null=True, blank=True
     )  # E.g., GitHub, Website, Email, etc.

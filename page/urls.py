@@ -10,6 +10,7 @@ from .views import (
     AllCategories,
     EachCategory,
     AddCategoryView,
+    ProfileView,
 )
 
 urlpatterns = [
@@ -21,6 +22,6 @@ urlpatterns = [
     path("edit_task/<int:pk>", EditTaskView.as_view(), name="edit_task"),
     path("category/", AllCategories.as_view(), name="all_categories"),
     path("category/<str:cat>", EachCategory.as_view(), name="each_category"),
-    # path("category/<str:name>", EachCategory.as_view(), name="each_category"),
     path("add_category/", AddCategoryView.as_view(), name="add_category"),
+    path("profile/", ProfileView.as_view(), name="profile"),
 ]
