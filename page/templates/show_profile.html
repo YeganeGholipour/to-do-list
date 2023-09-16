@@ -7,13 +7,18 @@
 {% block content %}
     <h3>Your Profile</h3>
         <p>Avatar: <img src="{{ object.avatar.url }}" alt="Avatar"></p>
-        <p>Bio: {{ objec.bio }}</p>
+        <p>Bio: {{ object.bio }}</p>
     <h3>Contact Information</h3>
 <ul>
-    {% for contact in contact_information %}
+    {% for contact in user_information %}
         <li>{{ contact.contact_type }}: {{ contact.contact_value }}</li>
     {% empty %}
         <li>No contact information available.</li>
     {% endfor %}
 </ul>
+
+{% if user.is_authenticated and object.user == user %}
+    <a href="{% url 'edit_profile'  %}" class="btn btn-sm btn-warning">Edit</a>
+{% endif %}
+<a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
 {% endblock content %}

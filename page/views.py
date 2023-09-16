@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Tasks, Category, Profile, ContactInformation
-from .forms import AddTask, EditTask, AddCategory
+from .forms import AddTask, EditTask, AddCategory, EditProfile
 from django.http import HttpResponse
 from django.views import View
 from django.urls import reverse_lazy
@@ -128,3 +128,27 @@ class ProfileView(LoginRequiredMixin, DetailView):
         )
         context["user_information"] = contact_information
         return context
+
+
+class ProfileEditView(LoginRequiredMixin, UpdateView):
+    model = Profile
+    template_name = "update_profile.html"
+    form_class = EditProfile
+    success_url = reverse_lazy("profile")
+
+    def get_object(self):
+        # Return the profile of the currently logged-in user
+        return self.request.user.profile
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        profile = self.get_object()
+        # Pass the existing contact information to the form
+        kwargs["initial"]["contact_type"] = profile.contactinformation.contact_type
+        kwargs["initial"]["contact_value"] = profile.contactinformation.contact_value
+        return kwargs
+
+    def form_valid(self, form):
+        # Set the 'user' field to the currently logged-in user
+        form.instance.user = self.request.user
+        return super().form_valid(form)

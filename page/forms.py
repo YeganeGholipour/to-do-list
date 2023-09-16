@@ -1,5 +1,5 @@
 from django import forms
-from .models import Tasks, Category
+from .models import Tasks, Category, Profile, ContactInformation
 from django.contrib.auth import get_user_model
 
 
@@ -68,3 +68,38 @@ class AddCategory(forms.ModelForm):
                 attrs={"class": "form-control", "placeholder": "Add a new category..."}
             ),
         }
+
+
+class EditProfile(forms.ModelForm):
+    contact_type = forms.CharField(max_length=50, required=False)
+    contact_value = forms.CharField(max_length=255, required=False)
+
+    class Meta:
+        model = Profile
+        fields = (
+            "avatar",
+            "bio",
+        )
+
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+
+        contact_type = self.cleaned_data.get("contact_type")
+        contact_value = self.cleaned_data.get("contact_value")
+
+        if contact_type and contact_value:
+            # Update or create the contact information
+            contact_info, created = ContactInformation.objects.get_or_create(
+                user_profile=profile,
+                defaults={"contact_type": contact_type, "contact_value": contact_value},
+            )
+
+            if not created:
+                contact_info.contact_type = contact_type
+                contact_info.contact_value = contact_value
+                contact_info.save()
+
+        if commit:
+            profile.save()
+
+        return profile

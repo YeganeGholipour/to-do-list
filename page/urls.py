@@ -11,6 +11,7 @@ from .views import (
     EachCategory,
     AddCategoryView,
     ProfileView,
+    ProfileEditView,
 )
 
 urlpatterns = [
@@ -24,4 +25,5 @@ urlpatterns = [
     path("category/<str:cat>", EachCategory.as_view(), name="each_category"),
     path("add_category/", AddCategoryView.as_view(), name="add_category"),
     path("profile/", ProfileView.as_view(), name="profile"),
+    path("profile/edit", ProfileEditView.as_view(), name="edit_profile"),
 ]
