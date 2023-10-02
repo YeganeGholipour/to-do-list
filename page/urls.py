@@ -10,8 +10,9 @@ from .views import (
     AllCategories,
     EachCategory,
     AddCategoryView,
-    ProfileView,
-    ProfileEditView,
+    # ProfileView,
+    # ProfileEditView,
+    MyProfile,
 )
 
 urlpatterns = [
@@ -24,6 +25,7 @@ urlpatterns = [
     path("category/", AllCategories.as_view(), name="all_categories"),
     path("category/<str:cat>", EachCategory.as_view(), name="each_category"),
     path("add_category/", AddCategoryView.as_view(), name="add_category"),
-    path("profile/", ProfileView.as_view(), name="profile"),
-    path("profile/edit", ProfileEditView.as_view(), name="edit_profile"),
+    # path("profile/", ProfileView.as_view(), name="profile"),
+    # path("profile/edit", ProfileEditView.as_view(), name="edit_profile"),
+    path("profile/", MyProfile.as_view(), name="profile"),
 ]

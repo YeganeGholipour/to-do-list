@@ -1,8 +1,9 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgresql:16
+  pgdb:
+    image: postgres:16
+    restart: on-failure
     environment:
       POSTGRES_DB: to-doListDatabase
       POSTGRES_USER: to-doListUser
@@ -11,18 +12,27 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - to-do-list
 
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    restart: on-failure
+    
+    environment:
+      SECRET_KEY: 'qwertyhnkpiygdgfrs54'
+      DB_NAME: to-doListDatabase
+      DB_USER: to-doListUser
+      DB_PASSWORD: alexyegane2002
+      DB_HOST: pgdb
+      DB_PORT: "5432"
     volumes:
       - .:/app
     ports:
       - "8000:8000"
-    networks:
-      - to-do-list
-  
-networks:
-  - to-do-list
+
+    depends_on:
+      - pgdb
+
+
+volumes:
+  postgres_data:
+    driver: local

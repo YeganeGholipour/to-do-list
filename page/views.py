@@ -2,9 +2,10 @@ from typing import Any
 from django.db import models
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Tasks, Category, Profile, ContactInformation
-from .forms import AddTask, EditTask, AddCategory, EditProfile
+from .forms import AddTask, EditTask, AddCategory, ProfileForm
 from django.http import HttpResponse
 from django.views import View
 from django.urls import reverse_lazy
@@ -114,6 +115,35 @@ class AddCategoryView(CreateView):
         return redirect(self.get_success_url())
 
 
+class MyProfile(LoginRequiredMixin, View):
+    def get_context_data(self, **kwargs: Any):
+        context = super().get_context_data(**kwargs)
+        contact_information = ContactInformation.objects.filter(
+            user_profile=self.request.user.profile
+        )
+        context["user_information"] = contact_information
+        return context
+
+    def get(self, request):
+        profile_form = ProfileForm()
+        user_profile = request.user
+        context = {"profile_form": profile_form}
+        return render(request, "profile.html", context)
+
+    def post(self, request):
+        profile_form = ProfileForm(request.POST)
+
+        if profile_form.is_valid():
+            profile_form.save()
+            messages.success(request, "Your Profile has been updated successfully")
+            return redirect("profile")
+        else:
+            context = {"profile_form": profile_form}
+            messages.error(request, "Error updating profile")
+            return render(request, "profile.html", context)
+
+
+"""
 class ProfileView(LoginRequiredMixin, DetailView):
     model = Profile
     template_name = "show_profile.html"
@@ -128,7 +158,6 @@ class ProfileView(LoginRequiredMixin, DetailView):
         )
         context["user_information"] = contact_information
         return context
-
 
 class ProfileEditView(LoginRequiredMixin, UpdateView):
     model = Profile
@@ -152,3 +181,4 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         # Set the 'user' field to the currently logged-in user
         form.instance.user = self.request.user
         return super().form_valid(form)
+"""
